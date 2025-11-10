@@ -1,0 +1,10 @@
+raft-simple/
+├─ docker-compose.yml
+├─ Dockerfile
+├─ requirements.txt
+├─ node/
+│  ├─ main.py
+│  ├─ raft.py
+│  ├─ storage.py
+│  └─ client.py
+└─ run_tests.sh

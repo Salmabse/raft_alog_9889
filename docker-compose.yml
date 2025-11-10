@@ -1,0 +1,62 @@
+version: '3.8'
+services:
+  node1:
+    build: .
+    environment:
+      - NODE_ID=1
+      - PORT=5000
+      - PEERS=node2:5000,node3:5000,node4:5000,node5:5000
+    ports:
+      - "5001:5000"
+    volumes:
+      - node1_data:/app/data
+
+  node2:
+    build: .
+    environment:
+      - NODE_ID=2
+      - PORT=5000
+      - PEERS=node1:5000,node3:5000,node4:5000,node5:5000
+    ports:
+      - "5002:5000"
+    volumes:
+      - node2_data:/app/data
+
+  node3:
+    build: .
+    environment:
+      - NODE_ID=3
+      - PORT=5000
+      - PEERS=node1:5000,node2:5000,node4:5000,node5:5000
+    ports:
+      - "5003:5000"
+    volumes:
+      - node3_data:/app/data
+  node4:
+    build: .
+    environment:
+      - NODE_ID=4
+      - PORT=5000
+      - PEERS=node1:5000,node2:5000,node3:5000,node5:5000
+    ports:
+      - "5004:5000"
+    volumes:
+      - node4_data:/app/data
+  node5:
+    build: .
+    environment:
+      - NODE_ID=5
+      - PORT=5000
+      - PEERS=node1:5000,node2:5000,node3:5000,node4:5000
+    ports:
+      - "5005:5000"
+    volumes:
+      - node5_data:/app/data
+
+
+volumes:
+  node1_data:
+  node2_data:
+  node3_data:
+  node4_data:
+  node5_data:
