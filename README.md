@@ -1,6 +1,6 @@
 # RAFT Consensus Algorithm Project
 
-This project implements a **simplified RAFT consensus algorithm** using Python and Docker. The cluster consists of **3–5 nodes**, each running in a separate Docker container, demonstrating leader election, log replication, and fault tolerance.
+This project implements a **simplified RAFT consensus algorithm** using Python and Docker. The cluster consists of **5 nodes**, each running in a separate Docker container, demonstrating leader election, log replication, and fault tolerance.
 
 ---
 
@@ -21,7 +21,7 @@ This project implements a **simplified RAFT consensus algorithm** using Python a
 
 ## Project Structure
 
-ASG3_RAFT_ALGO_9889/node/
+ASG3_RAFT_ALGO_9889/
 ├─ Dockerfile
 ├─ main.py
 ├─ raft.py
@@ -29,10 +29,10 @@ ASG3_RAFT_ALGO_9889/node/
 ├─ README.md
 
 
-- `main.py` — Flask app exposing RAFT endpoints.  
-- `raft.py` — RAFT node implementation.  
-- `Dockerfile` — Docker build instructions.  
-- `requirements.txt` — Python dependencies.  
+- `main.py` — Flask app exposing RAFT endpoints.
+- `raft.py` — RAFT node implementation.
+- `Dockerfile` — Docker build instructions.
+- `requirements.txt` — Python dependencies.
 
 ---
 
@@ -46,63 +46,55 @@ ASG3_RAFT_ALGO_9889/node/
 
 ---
 
+
 ## Docker Usage
 
 ### Build the Docker image
 
 ```bash
 docker build -t raft-node .
-
-
----
+```
 
 ## Run a node
 
----
-
+```bash
 docker run -d -e NODE_ID=1 -e PORT=5001 -e PEERS="localhost:5002,localhost:5003" -p 5001:5000 raft-node
-
+```
 
 Repeat for other nodes, updating NODE_ID, PORT, and PEERS.
 
 ## Testing
-Check node status
+### Check node status
 
-
+```bash
 curl http://localhost:5001/status
 
-Send a command to the leader
+```
+
+### Send a command to the leader
+
+```powershell
 Invoke-WebRequest -Uri "http://localhost:5005/client_command" `
   -Method POST -ContentType "application/json" `
   -Body '{"command":"set x=42"}'
-
-  ## Verify logs on all nodes
+```
+### Verify logs on all nodes
 
 ```bash
-
 curl http://localhost:5001/status
 curl http://localhost:5002/status
 curl http://localhost:5003/status
 curl http://localhost:5004/status
 curl http://localhost:5005/status
+```
+All nodes should show the same log entries.
 
-All nodes should show the same log entries, confirming log consistency.
+## Notes
 
-Notes
+- Multi-node clusters require each node to run in a separate container with proper NODE_ID and PEERS configuration.
 
-Multi-node clusters require each node to run in a separate container with proper NODE_ID and PEERS configuration.
+- /client_command should only be sent to the leader node. Followers will redirect clients to the current leader.
 
-/client_command should only be sent to the leader node. Followers will redirect clients to the current leader.
-
-License
+## License
 
 This project is for educational purposes and does not have a license.
-
-
----
-
-## **Step 3 — Save the file**
-
-- File name: `README.md`  
-- File type: `All files` (if using Notepad)  
-- Location: Your project folder `ASG3_RAFT_ALGO_9889`  
